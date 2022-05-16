@@ -66,3 +66,46 @@ body {
     height: 1.6rem;
     width: 1.6rem;
 }
+
+.input-section {}
+
+select {
+    border-radius: .5rem;
+    padding: 1.4rem 2.4rem;
+    border: none;
+}
+
+select:focus {
+    outline: none;
+}
+
+select .default {
+    display: none;
+}
+
+select,
+select option {
+    font-size: 1.2rem;
+    font-family: 'Nunito Sans', sans-serif;
+    color: var(--clr-text);
+    background-color: var(--clr-elements);
+}
+
+.input-form {
+    padding: var(--body-padding);
+
+    .input {
+        background-color: var(--clr-elements);
+        border: none;
+        border-radius: .5rem;
+        width: 100%;
+    }
+
+    .input::placeholder {
+        color: var(--clr-text);
+    }
+
+    .input:focus {
+        outline: none;
+    }
+}
