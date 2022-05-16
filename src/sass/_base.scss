@@ -151,12 +151,13 @@ select option {
     &__flag {
         display: flex;
 
+
         img {
             width: 26.4rem;
             height: 16rem;
             border-top-left-radius: .5rem;
             border-top-right-radius: .5rem;
-
+            object-fit: cover;
         }
     }
 

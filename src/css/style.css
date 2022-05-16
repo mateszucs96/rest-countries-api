@@ -133,6 +133,7 @@ select option {
   height: 16rem;
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
+  object-fit: cover;
 }
 .card__info {
   background-color: var(--clr-elements);
