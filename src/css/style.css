@@ -1,0 +1,24 @@
+:root {
+  --clr-elements: hsl(209, 23%, 22%);
+  --clr-bg: hsl(207, 26%, 17%);
+  --clr-text: hsl(0, 0%, 100%);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  box-sizing: border-box;
+  background-color: var(--clr-bg);
+}
+
+/*# sourceMappingURL=style.css.map */
