@@ -2,6 +2,9 @@
   --clr-elements: hsl(209, 23%, 22%);
   --clr-bg: hsl(207, 26%, 17%);
   --clr-text: hsl(0, 0%, 100%);
+  --fs-400: 1.4rem;
+  --fs-600: 1.6rem;
+  --body-padding: 1.6rem;
 }
 
 *,
@@ -12,6 +15,10 @@
   box-sizing: inherit;
 }
 
+* {
+  font-size: var(--fs-400);
+}
+
 html {
   font-size: 62.5%;
 }
@@ -19,6 +26,30 @@ html {
 body {
   box-sizing: border-box;
   background-color: var(--clr-bg);
+  font-family: "Nunito Sans", sans-serif;
+  color: var(--clr-text);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--clr-elements);
+  height: 8rem;
+  padding: 0 var(--body-padding);
+}
+.header__dark-mode {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.header__dark-mode .dark-mode--text {
+  font-size: 1.2rem;
+}
+
+.icon-moon {
+  height: 1.6rem;
+  width: 1.6rem;
 }
 
 /*# sourceMappingURL=style.css.map */
