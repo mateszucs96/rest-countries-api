@@ -1,7 +1,7 @@
 let countryNames = [];
 let value;
 
-const cards = document.querySelector('.card-container');
+const cardss = document.querySelector('.card-container');
 
 const fetchAllCountries = async () => {
     const res = await fetch(`https://restcountries.com/v3.1/all`);
@@ -22,7 +22,7 @@ const fetchBySearch = async (name) => {
     return data;
 }
 
-const debounce = (cb, delay = 1000) => {
+const debounce = (cb, delay) => {
     let timeout;
     return (...args) => {
         clearTimeout(timeout)
@@ -35,38 +35,40 @@ const debounce = (cb, delay = 1000) => {
 
 const updateDebounceText = debounce(async text => {
     value = text;
-    console.log(value)
-    // cards.textContent = ''
     const filteredCountries = countryNames.filter(country => {
         return country.startsWith(value)
     })
-    console.log(filteredCountries)
+    if (value) {
 
-    for (const country of filteredCountries) {
+        for (const country of filteredCountries) {
+            const data = await fetchBySearch(country)
+            const parts = data[0].population.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            const num = parts.join(".");
+            console.log(data[0])
 
-        const data = await fetchBySearch(country)
-        const parts = data[0].population.toString().split(".");
-        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        const num = parts.join(".");
-
-        const html = `
-        <div class="card" >
-            <div class="card__flag">
-                <img src="${data[0].flags.svg}">
-            </div>
-            <div class="card__info">
-                <h1 class="card__title">
-                    ${data[0].name.common}
-                </h1>
-                <div class="card__details">
-                    <p class="info-label">Population: <span class="info-data">${num}</span></p>
-                    <p class="info-label">Region: <span class="info-data">${data[0].region}</span></p>
-                    <p class="info-label">Capital: <span class="info-data">${data[0].capital}</span></p>
+            const html = `
+            <div class="card" >
+                <div class="card__flag">
+                    <img src="${data[0].flags.svg}">
                 </div>
-            </div>
-        </div >
-        `
-        cards.insertAdjacentHTML('beforeend', html)
+                <div class="card__info">
+                    <h1 class="card__title">
+                        ${data[0].name.common}
+                    </h1>
+                    <div class="card__details">
+                        <p class="info-label">Population: <span class="info-data">${num}</span></p>
+                        <p class="info-label">Region: <span class="info-data">${data[0].region}</span></p>
+                        <p class="info-label">Capital: <span class="info-data">${data[0].capital}</span></p>
+                    </div>
+                </div>
+            </div >
+            `
+            cardss.insertAdjacentHTML('beforeend', html)
+        }
+    }
+    if (!value) {
+        app.displayCountry();
     }
 
 }, 250)
@@ -74,7 +76,7 @@ const updateDebounceText = debounce(async text => {
 
 class App {
 
-    cards = document.querySelector('.card-container');
+    cards = cardss
     selector = document.querySelector('.countries');
     options = document.querySelectorAll('option');
     inputForm = document.querySelector('.input-form');
@@ -119,7 +121,7 @@ class App {
     async displayCountry() {
         this.cards.textContent = '';
         countryNames = [];
-
+        console.log(countryNames, 'before')
         for (const data of await fetchAllCountries()) {
             countryNames.push(data.name.common.toLowerCase())
             const parts = data.population.toString().split(".");
@@ -145,17 +147,12 @@ class App {
                 `
             this.cards.insertAdjacentHTML('beforeend', html)
         }
+        console.log(countryNames, 'after')
     }
     async displaySearch(e) {
         e.preventDefault();
-        // const value = this.input.value.toLowerCase()
         this.cards.textContent = '';
         updateDebounceText(e.target.value.toLowerCase())
-
-
-
-
-        // if (!value) this.displayCountry();
     }
 }
 
