@@ -1,25 +1,17 @@
+
 let countryNames = [];
+let countries = [];
 let value;
 
-const cardss = document.querySelector('.card-container');
 
-const fetchAllCountries = async () => {
-    const res = await fetch(`https://restcountries.com/v3.1/all`);
+const fetchData = async (url, arg = '') => {
+    console.log(url)
+
+    const res = await fetch(url + arg);
     const data = await res.json();
+    console.log(data)
     return data;
-}
 
-const fetchByRegion = async (region) => {
-    const res = await fetch(`https://restcountries.com/v3.1/region/${region}`)
-    const data = await res.json();
-    return data;
-}
-
-
-const fetchBySearch = async (name) => {
-    const res = await fetch(`https://restcountries.com/v3.1/name/${name}`)
-    const data = await res.json();
-    return data;
 }
 
 const debounce = (cb, delay) => {
@@ -41,7 +33,8 @@ const updateDebounceText = debounce(async text => {
     if (value) {
 
         for (const country of filteredCountries) {
-            const data = await fetchBySearch(country)
+
+            const data = await fetchData(`https://restcountries.com/v3.1/name/`, country)
             const parts = data[0].population.toString().split(".");
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             const num = parts.join(".");
@@ -64,23 +57,38 @@ const updateDebounceText = debounce(async text => {
                 </div>
             </div >
             `
-            cardss.insertAdjacentHTML('beforeend', html)
+            app.cards.insertAdjacentHTML('beforeend', html);
+
         }
     }
     if (!value) {
         app.displayCountry();
     }
 
-}, 250)
+}, 350)
+
+
+class Country {
+    constructor(name, flag, population, region, capital) {
+        this.name = name;
+        this.flag = flag;
+        this.population = population;
+        this.region = region;
+        this.capital = capital;
+
+
+    }
+}
 
 
 class App {
 
-    cards = cardss
+    cards = document.querySelector('.card-container');
     selector = document.querySelector('.countries');
     options = document.querySelectorAll('option');
     inputForm = document.querySelector('.input-form');
     input = document.querySelector('.input');
+    detailsSection = document.querySelector('.details-section');
 
     constructor() {
         this.displayCountry();
@@ -91,7 +99,7 @@ class App {
     async showSelect() {
         this.cards.textContent = '';
         const selectedCountry = this.selector.options[this.selector.selectedIndex].value
-        for (const data of await fetchByRegion(selectedCountry)) {
+        for (const data of await fetchData(`https://restcountries.com/v3.1/region/`, selectedCountry)) {
             const parts = data.population.toString().split(".");
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             const num = parts.join(".");
@@ -115,18 +123,22 @@ class App {
                 </div >
                 `
             this.cards.insertAdjacentHTML('beforeend', html)
+            // const card = document.querySelector('.card');
         }
+
     }
 
     async displayCountry() {
         this.cards.textContent = '';
         countryNames = [];
         console.log(countryNames, 'before')
-        for (const data of await fetchAllCountries()) {
+        for (const data of await fetchData(`https://restcountries.com/v3.1/all`)) {
             countryNames.push(data.name.common.toLowerCase())
             const parts = data.population.toString().split(".");
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             const num = parts.join(".");
+            const country = new Country(data.name.common, data.flags.svg, num, data.region, data.capital)
+            countries.push(country);
 
             const html = `
                 <div class="card" >
@@ -146,13 +158,73 @@ class App {
                 </div >
                 `
             this.cards.insertAdjacentHTML('beforeend', html)
+
         }
-        console.log(countryNames, 'after')
+        const card = document.querySelectorAll('.card')
+
+        card.forEach((el, i) => el.addEventListener('click', this.displayDetails.bind(this)))
+        // countries.forEach((el, i) => console.log(el.name, i))
     }
     async displaySearch(e) {
         e.preventDefault();
         this.cards.textContent = '';
         updateDebounceText(e.target.value.toLowerCase())
+    }
+
+    async displayDetails(e) {
+        this.cards.textContent = '';
+        const clicked = e.target.closest('.card')
+        const countryName = clicked.children[1].children[0].textContent.trim()
+
+        const dataArr = await fetchData(`https://restcountries.com/v3.1/name/`, countryName);
+        const data = dataArr[0]
+        console.log(data.languages)
+
+        let currencies;
+        let native
+
+        for (const curr of Object.entries(data.currencies)) {
+            currencies = curr[1].name
+        }
+
+        for (const name of Object.entries(data.name.nativeName)) {
+            native = name[1].official
+        }
+        const html = `
+        <button class="details__btn btn">Back</button>
+
+        <div class="country">
+            <div class="flag__box">
+                <img src="${data.flags.svg}" alt="flag">
+            </div>
+
+            <h1 class="country__name">
+                ${data.name.common}
+            </h1>
+            <div class="country__details">
+                <p class="country-label">Native Name: <span class="country-data capital">${native}</span></p>
+                <p class="country-label">Population: <span class="country-data population">${data.population}</span></p>
+                <p class="country-label">Region: <span class="country-data region">${data.region}</span></p>
+                <p class="country-label">Sub Region: <span class="country-data capital">${data.subregion}</span></p>
+                <p class="country-label">Capital: <span class="country-data capital">${data.capital}</span></p>
+            </div>
+            <div class="country__secondary-details">
+                <p class="country-label">Top Level Domain: <span class="country-data capital">.de</span></p>
+                <p class="country-label">Currencies: <span class="country-data population">${currencies}</span></p>
+                <p class="country-label">Languages: <span class="country-data region">Europe, French</span></p>
+            </div>
+
+            <h4 class="border-countries">
+                Boder Countries
+            </h4>
+            <div class="borders">
+                <p>A</p>
+
+            </div>
+
+        </div>
+        `
+        this.detailsSection.insertAdjacentHTML('beforeend', html)
     }
 }
 

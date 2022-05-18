@@ -157,4 +157,9 @@ select option {
   opacity: 0.8;
 }
 
+.details-section .country .flag__box img {
+  width: 32rem;
+  height: 23rem;
+}
+
 /*# sourceMappingURL=style.css.map */
