@@ -5,14 +5,17 @@ let value;
 
 
 const fetchData = async (url, arg = '') => {
-    console.log(url)
+    try {
+        const res = await fetch(url + arg);
+        const data = await res.json();
+        return data;
 
-    const res = await fetch(url + arg);
-    const data = await res.json();
-    console.log(data)
-    return data;
-
+    } catch (err) {
+        console.error(err)
+    }
 }
+
+
 
 const debounce = (cb, delay) => {
     let timeout;
@@ -39,26 +42,8 @@ const updateDebounceText = debounce(async text => {
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             const num = parts.join(".");
             console.log(data[0])
-
-            const html = `
-            <div class="card" >
-                <div class="card__flag">
-                    <img src="${data[0].flags.svg}">
-                </div>
-                <div class="card__info">
-                    <h1 class="card__title">
-                        ${data[0].name.common}
-                    </h1>
-                    <div class="card__details">
-                        <p class="info-label">Population: <span class="info-data">${num}</span></p>
-                        <p class="info-label">Region: <span class="info-data">${data[0].region}</span></p>
-                        <p class="info-label">Capital: <span class="info-data">${data[0].capital}</span></p>
-                    </div>
-                </div>
-            </div >
-            `
-            app.cards.insertAdjacentHTML('beforeend', html);
-
+            const countries = new Country(data[0].name.common, data[0].flags.svg, num, data[0].region, data[0].capital)
+            countries.renderCard()
         }
     }
     if (!value) {
@@ -69,6 +54,8 @@ const updateDebounceText = debounce(async text => {
 
 
 class Country {
+    cards = document.querySelector('.card-container');
+
     constructor(name, flag, population, region, capital) {
         this.name = name;
         this.flag = flag;
@@ -77,6 +64,27 @@ class Country {
         this.capital = capital;
 
 
+    }
+
+    renderCard() {
+        const html = `
+        <div class="card" >
+            <div class="card__flag">
+                <img src="${this.flag}">
+            </div>
+            <div class="card__info">
+                <h1 class="card__title">
+                    ${this.name}
+                </h1>
+                <div class="card__details">
+                    <p class="info-label">Population: <span class="info-data">${this.population}</span></p>
+                    <p class="info-label">Region: <span class="info-data">${this.region}</span></p>
+                    <p class="info-label">Capital: <span class="info-data">${this.capital}</span></p>
+                </div>
+            </div>
+        </div >
+        `
+        this.cards.insertAdjacentHTML('beforeend', html)
     }
 }
 
@@ -104,26 +112,8 @@ class App {
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             const num = parts.join(".");
             console.log(data)
-
-            const html = `
-                <div class="card" >
-                    <div class="card__flag">
-                        <img src="${data.flags.svg}">
-                    </div>
-                    <div class="card__info">
-                        <h1 class="card__title">
-                            ${data.name.common}
-                        </h1>
-                        <div class="card__details">
-                            <p class="info-label">Population: <span class="info-data">${num}</span></p>
-                            <p class="info-label">Region: <span class="info-data">${data.region}</span></p>
-                            <p class="info-label">Capital: <span class="info-data">${data.capital}</span></p>
-                        </div>
-                    </div>
-                </div >
-                `
-            this.cards.insertAdjacentHTML('beforeend', html)
-            // const card = document.querySelector('.card');
+            const country = new Country(data.name.common, data.flags.svg, num, data.region, data.capital)
+            country.renderCard()
         }
 
     }
@@ -139,26 +129,7 @@ class App {
             const num = parts.join(".");
             const country = new Country(data.name.common, data.flags.svg, num, data.region, data.capital)
             countries.push(country);
-
-            const html = `
-                <div class="card" >
-                    <div class="card__flag">
-                        <img src="${data.flags.svg}">
-                    </div>
-                    <div class="card__info">
-                        <h1 class="card__title">
-                            ${data.name.common}
-                        </h1>
-                        <div class="card__details">
-                            <p class="info-label">Population: <span class="info-data">${num}</span></p>
-                            <p class="info-label">Region: <span class="info-data">${data.region}</span></p>
-                            <p class="info-label">Capital: <span class="info-data">${data.capital}</span></p>
-                        </div>
-                    </div>
-                </div >
-                `
-            this.cards.insertAdjacentHTML('beforeend', html)
-
+            country.renderCard()
         }
         const card = document.querySelectorAll('.card')
 
