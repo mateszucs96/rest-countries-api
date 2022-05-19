@@ -1,6 +1,6 @@
+import * as model from './model.js';
+import Countryy from './view.js';
 
-let countryNames = [];
-let countries = [];
 let value;
 
 
@@ -30,118 +30,37 @@ const debounce = (cb, delay) => {
 
 const updateDebounceText = debounce(async text => {
     value = text;
-    const filteredCountries = countryNames.filter(country => {
-        return country.startsWith(value)
+    model.state.searched = model.state.countries.filter(country => {
+        return country.name.common.toLowerCase().startsWith(value)
     })
-    if (value) {
+    model.state.searched.forEach(country => {
 
-        for (const country of filteredCountries) {
+        Countryy.renderCard(country)
+    });
 
-            const data = await fetchData(`https://restcountries.com/v3.1/name/`, country)
-            const parts = data[0].population.toString().split(".");
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            const num = parts.join(".");
-            console.log(data[0])
-            const countries = new Country(data[0].name.common, data[0].flags.svg, num, data[0].region, data[0].capital)
-            countries.renderCard()
-        }
-    }
-    if (!value) {
-        app.displayCountry();
-    }
 
 }, 350)
 
-
-class Country {
-    cards = document.querySelector('.card-container');
-
-    constructor(name, flag, population, region, capital) {
-        this.name = name;
-        this.flag = flag;
-        this.population = population;
-        this.region = region;
-        this.capital = capital;
-
-
-    }
-
-    renderCard() {
-        const html = `
-        <div class="card" >
-            <div class="card__flag">
-                <img src="${this.flag}">
-            </div>
-            <div class="card__info">
-                <h1 class="card__title">
-                    ${this.name}
-                </h1>
-                <div class="card__details">
-                    <p class="info-label">Population: <span class="info-data">${this.population}</span></p>
-                    <p class="info-label">Region: <span class="info-data">${this.region}</span></p>
-                    <p class="info-label">Capital: <span class="info-data">${this.capital}</span></p>
-                </div>
-            </div>
-        </div >
-        `
-        this.cards.insertAdjacentHTML('beforeend', html)
-    }
+const displaySearch = (e) => {
+    e.preventDefault();
+    // console.log(e.target.value)
+    updateDebounceText(e.target.value.toLowerCase())
 }
 
+const showSelectt = (value) => {
+    console.log(value)
+    if (value === 'Filter by Region') return;
+    model.state.filtered = model.state.countries.filter(el => el.region.toLowerCase() === value.toLowerCase());
+    model.state.filtered.forEach(el => Countryy.renderCard(el));
+}
+
+const displayCountryy = async () => {
+    await model.fetchData('https://restcountries.com/v3.1/all')
+    console.log(model.state.countries)
+    model.state.countries.forEach(el => Countryy.renderCard(el));
+}
 
 class App {
-
-    cards = document.querySelector('.card-container');
-    selector = document.querySelector('.countries');
-    options = document.querySelectorAll('option');
-    inputForm = document.querySelector('.input-form');
-    input = document.querySelector('.input');
-    detailsSection = document.querySelector('.details-section');
-
-    constructor() {
-        this.displayCountry();
-        this.selector.addEventListener('change', this.showSelect.bind(this))
-        this.inputForm.addEventListener('input', this.displaySearch.bind(this))
-    }
-
-    async showSelect() {
-        this.cards.textContent = '';
-        const selectedCountry = this.selector.options[this.selector.selectedIndex].value
-        for (const data of await fetchData(`https://restcountries.com/v3.1/region/`, selectedCountry)) {
-            const parts = data.population.toString().split(".");
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            const num = parts.join(".");
-            console.log(data)
-            const country = new Country(data.name.common, data.flags.svg, num, data.region, data.capital)
-            country.renderCard()
-        }
-
-    }
-
-    async displayCountry() {
-        this.cards.textContent = '';
-        countryNames = [];
-        console.log(countryNames, 'before')
-        for (const data of await fetchData(`https://restcountries.com/v3.1/all`)) {
-            countryNames.push(data.name.common.toLowerCase())
-            const parts = data.population.toString().split(".");
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            const num = parts.join(".");
-            const country = new Country(data.name.common, data.flags.svg, num, data.region, data.capital)
-            countries.push(country);
-            country.renderCard()
-        }
-        const card = document.querySelectorAll('.card')
-
-        card.forEach((el, i) => el.addEventListener('click', this.displayDetails.bind(this)))
-        // countries.forEach((el, i) => console.log(el.name, i))
-    }
-    async displaySearch(e) {
-        e.preventDefault();
-        this.cards.textContent = '';
-        updateDebounceText(e.target.value.toLowerCase())
-    }
-
     async displayDetails(e) {
         this.cards.textContent = '';
         const clicked = e.target.closest('.card')
@@ -199,4 +118,10 @@ class App {
     }
 }
 
+const init = () => {
+    Countryy.addHandlerSelect(showSelectt);
+    Countryy.addHandlerSearch(displaySearch);
+    displayCountryy();
+}
+init()
 const app = new App();
