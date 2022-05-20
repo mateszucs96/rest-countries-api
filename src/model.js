@@ -17,3 +17,7 @@ export const fetchData = async (url, arg = '') => {
         console.error(err)
     }
 }
+
+export const loadDetails = (e) => {
+
+}
