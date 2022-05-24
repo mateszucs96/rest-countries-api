@@ -1,18 +1,11 @@
 class Country {
     data;
-    clicked;
     card;
+
     cards = document.querySelector('.card-container');
     selector = document.querySelector('.countries');
     inputForm = document.querySelector('.input-form');
     detailsSection = document.querySelector('.details-section');
-    constructor(name, flag, population, region, capital) {
-        this.name = name;
-        this.flag = flag;
-        this.population = population;
-        this.region = region;
-        this.capital = capital;
-    };
 
     addHandlerSelect(handler) {
         this.selector.addEventListener('click', () => {

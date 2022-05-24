@@ -10,7 +10,6 @@ export const fetchData = async (url, arg = '') => {
         const res = await fetch(url + arg);
         const data = await res.json();
         state.countries = data
-        console.log(state.countries)
         return data;
 
     } catch (err) {

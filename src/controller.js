@@ -43,7 +43,6 @@ const controlSelect = (value) => {
 
 const controlCountries = async () => {
     await model.fetchData('https://restcountries.com/v3.1/all')
-    console.log(model.state.countries)
     model.state.countries.forEach(el => {
         Country.renderCard(el);
     })
