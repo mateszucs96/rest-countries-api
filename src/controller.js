@@ -1,4 +1,5 @@
 import * as model from './model.js';
+import view from './view.js';
 import Country from './view.js';
 
 
@@ -27,12 +28,8 @@ const controlCountries = async () => {
 }
 
 const controlDetails = (countryName) => {
-    model.state.countries.forEach(el => {
-        if (el.name.common === countryName) {
-            console.log(countryName)
-            Country.renderDetails(el)
-        }
-    })
+    model.loadDetails(countryName)
+    Country.renderDetails(model.state.details);
 }
 
 const init = () => {

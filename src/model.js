@@ -2,6 +2,7 @@ export const state = {
     countries: {},
     filtered: {},
     searched: {},
+    details: [],
     query: '',
 }
 
@@ -18,8 +19,6 @@ export const fetchData = async (url, arg = '') => {
     }
 }
 
-
-
 export const loadSearch = text => {
     state.searched = state.countries.filter(country => {
         console.log(state.query)
@@ -28,6 +27,12 @@ export const loadSearch = text => {
 }
 
 
-export const loadDetails = (e) => {
-
+export const loadDetails = (countryName, native) => {
+    state.details = state.countries.filter(el => {
+        if (el.name.common === countryName) {
+            console.log(el)
+            return el
+        }
+    })
+    console.log(state.details)
 }

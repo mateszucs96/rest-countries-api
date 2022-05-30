@@ -30,31 +30,42 @@ class Country {
     };
 
     renderDetails(data) {
-        this.data = data
+        this.data = data[0]
         this.cards.textContent = '';
+        let native;
+        let languages = []
+        for (const name of Object.entries(this.data.name.nativeName)) {
+            native = name[1].official
+        }
+        for (const language of Object.values(this.data.languages)) {
+
+            languages = [...languages, language]
+        }
+        this.data.borders.forEach(el => console.log(el))
         const html = `
         <button class="details__btn btn">Back</button>
 
         <div class="country">
             <div class="flag__box">
-                <img src="${data.flags.svg}" alt="flag">
+                <img src="${this.data.flags.svg}" alt="flag">
             </div>
 
             <h1 class="country__name">
-                ${data.name.common}
+                ${this.data.name.common}
             </h1>
             <div class="country__details">
-                
-                <p class="country-label">Population: <span class="country-data population">${data.population}</span></p>
-                <p class="country-label">Region: <span class="country-data region">${data.region}</span></p>
-                <p class="country-label">Sub Region: <span class="country-data capital">${data.subregion}</span></p>
-                <p class="country-label">Capital: <span class="country-data capital">${data.capital}</span></p>
+                <p class="country-label">Native name: <span class="country-data population">${native}</span></p>
+                <p class="country-label">Population: <span class="country-data population">${this.data.population}</span></p>
+                <p class="country-label">Region: <span class="country-data region">${this.data.region}</span></p>
+                <p class="country-label">Sub Region: <span class="country-data capital">${this.data.subregion}</span></p>
+                <p class="country-label">Capital: <span class="country-data capital">${this.data.capital}</span></p>
             </div>
             <div class="country__secondary-details">
                 <p class="country-label">Top Level Domain: <span class="country-data capital">.de</span></p>
                 
-                <p class="country-label">Languages: <span class="country-data region">Europe, French</span></p>
-            </div>
+                <p class="country-label">Languages: <span class="country-data region">${languages.splice(' ').join(', ')}</span></p>
+                <p class="country-label">Boders: <span class="country-data region">${languages.splice(' ').join(', ')}</span></p>
+                </div>
 
             <h4 class="border-countries">
                 Boder Countries
