@@ -1,37 +1,14 @@
 import * as model from './model.js';
 import Country from './view.js';
 
-let value;
 
+const controlSearch = e => {
+    e.preventDefault();
+    model.loadSearch(e.target.value.toLowerCase())
 
-const debounce = (cb, delay) => {
-    let timeout;
-    return (...args) => {
-        clearTimeout(timeout)
-        timeout = setTimeout(() => {
-            cb(...args)
-        }, delay);
-    }
-}
-
-
-const updateDebounceText = debounce(async text => {
-    value = text;
-    model.state.searched = model.state.countries.filter(country => {
-        return country.name.common.toLowerCase().startsWith(value)
-    })
     model.state.searched.forEach(country => {
-
         Country.renderCard(country)
     });
-
-
-}, 350)
-
-const controlSearch = (e) => {
-    e.preventDefault();
-    // console.log(e.target.value)
-    updateDebounceText(e.target.value.toLowerCase())
 }
 
 const controlSelect = (value) => {
@@ -57,9 +34,6 @@ const controlDetails = (countryName) => {
         }
     })
 }
-
-// const card = document.querySelectorAll('.card')
-// card.forEach
 
 const init = () => {
     controlCountries();
