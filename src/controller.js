@@ -28,8 +28,14 @@ const controlCountries = async () => {
 }
 
 const controlDetails = (countryName) => {
-    model.loadDetails(countryName)
-    Country.renderDetails(model.state.details);
+
+    model.loadDetails(countryName, model.state.details.nativeName)
+    Country.renderDetails(
+        model.state.details.result,
+        model.state.details.nativeName,
+        model.state.details.currencies,
+        model.state.details.languages
+    );
 }
 
 const init = () => {
