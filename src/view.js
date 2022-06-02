@@ -29,7 +29,13 @@ class Country {
         }))
     };
 
-    renderDetails(data, nativeName, currencies, languages) {
+    renderBorderButton(text) {
+        return `
+        <button class="btn border-button">${text}</button>
+        `
+    }
+
+    renderDetails(data, nativeName, currencies, languages, borders) {
         this.data = data[0]
         this.cards.textContent = '';
         const html = `
@@ -51,21 +57,18 @@ class Country {
                 <p class="country-label">Capital: <span class="country-data capital">${this.data.capital}</span></p>
             </div>
             <div class="country__secondary-details">
-                <p class="country-label">Top Level Domain: <span class="country-data capital">.de</span></p>
+                <p class="country-label">Top Level Domain: <span class="country-data capital">${this.data.tld[0]}</span></p>
                 
                 <p class="country-label">Currencies: <span class="country-data region">${currencies}</span></p>
-                <p class="country-label">Languages: <span class="country-data region">${languages}</span></p>
-                <p class="country-label">Boders: <span class="country-data region"></span></p>
+                <p class="country-label">Languages: <span class="country-data region">${languages}</span></p>                
                 </div>
 
             <h4 class="border-countries">
                 Boder Countries
             </h4>
             <div class="borders">
-                <p>A</p>
-
+                ${borders.map(el => this.renderBorderButton(el.name.common)).join('')}
             </div>
-
         </div>
         `
         this.detailsSection.insertAdjacentHTML('beforeend', html);

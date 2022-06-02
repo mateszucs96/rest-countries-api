@@ -8,6 +8,7 @@ export const state = {
         languages: '',
         currencies: '',
         borders: [],
+        borderData: [],
     },
     query: '',
 }
@@ -39,7 +40,7 @@ export const getCurrencies = () => {
 }
 
 export const getNativeName = () => {
-
+    console.log(state.details.result[0].tld[0])
     for (const name of Object.entries(state.details.result[0].name.nativeName)) {
         return name[1].official
     }
@@ -56,16 +57,19 @@ export const getLanguages = () => {
 export const getBorders = () => {
 
     state.details.borders = state.details.result[0].borders?.map(el => el)
-}
-
-export const getBorderData = () => {
-    let bordersData = [];
-    state.countries.forEach(el => {
-
-        console.log(state.details.borders.filter(element => element === el.cca3))
-
+    // push borders data in array
+    state.details.borders.forEach(el => {
+        state.countries.forEach(element => {
+            element.cca3 === el && state.details.borderData.push(element)
+        })
     })
+    console.log(state.details.borderData[0])
 }
+
+// export const getBorderData = (arr) => {
+//     arr.forEach(el => )
+//     console.log(filtered)
+// }
 
 export const loadDetails = (countryName) => {
     state.details.result = state.countries.filter(el => {
@@ -77,5 +81,5 @@ export const loadDetails = (countryName) => {
     state.details.currencies = getCurrencies();
     state.details.languages = getLanguages();
     getBorders()
-    getBorderData()
+    // getBorderData()
 }

@@ -34,7 +34,8 @@ const controlDetails = (countryName) => {
         model.state.details.result,
         model.state.details.nativeName,
         model.state.details.currencies,
-        model.state.details.languages
+        model.state.details.languages,
+        model.state.details.borderData,
     );
 }
 
