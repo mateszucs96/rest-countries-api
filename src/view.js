@@ -72,6 +72,7 @@ class Country {
         </div>
         `
         this.detailsSection.insertAdjacentHTML('beforeend', html);
+        document.querySelectorAll('.border-button').forEach(el => el.addEventListener('click', () => console.log('a')))
     };
 
     renderCard(data) {

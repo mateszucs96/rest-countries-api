@@ -63,14 +63,8 @@ export const getBorders = () => {
             element.cca3 === el && state.details.borderData.push(element)
         })
     })
-    console.log(state.details.borderData[0])
+    console.log(state.details.borderData)
 }
-
-// export const getBorderData = (arr) => {
-//     arr.forEach(el => )
-//     console.log(filtered)
-// }
-
 export const loadDetails = (countryName) => {
     state.details.result = state.countries.filter(el => {
         if (el.name.common === countryName) {
