@@ -54,11 +54,18 @@ export const getLanguages = () => {
     return languages.splice('').join(', ')
 }
 
+export const getBorderData = (name) => {
+
+    const border = state.details.borderData.filter(el => el.name.common === name)
+    console.log(border[0])
+}
+
 export const getBorders = () => {
 
     state.details.borders = state.details.result[0].borders?.map(el => el)
     // push borders data in array
-    state.details.borders.forEach(el => {
+
+    state.details.borders?.forEach(el => {
         state.countries.forEach(element => {
             element.cca3 === el && state.details.borderData.push(element)
         })
@@ -74,6 +81,7 @@ export const loadDetails = (countryName) => {
     state.details.nativeName = getNativeName();
     state.details.currencies = getCurrencies();
     state.details.languages = getLanguages();
+    state.details.borderData = [];
     getBorders()
-    // getBorderData()
+
 }

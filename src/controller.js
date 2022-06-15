@@ -1,5 +1,4 @@
 import * as model from './model.js';
-import view from './view.js';
 import Country from './view.js';
 
 
@@ -37,6 +36,21 @@ const controlDetails = (countryName) => {
         model.state.details.languages,
         model.state.details.borderData,
     );
+    Country.addHandlerBackButton(controlCountries)
+    Country.addHandlerButton(contorlBorders)
+}
+
+const contorlBorders = (countryName) => {
+    model.loadDetails(countryName, model.state.details.nativeName)
+    Country.renderDetails(
+        model.state.details.result,
+        model.state.details.nativeName,
+        model.state.details.currencies,
+        model.state.details.languages,
+        model.state.details.borderData,
+    );
+    Country.addHandlerBackButton(controlCountries)
+    Country.addHandlerButton(contorlBorders)
 }
 
 const init = () => {

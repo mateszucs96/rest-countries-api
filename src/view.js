@@ -29,17 +29,33 @@ class Country {
         }))
     };
 
+    addHandlerButton(handler) {
+        document.querySelectorAll('.border-button').forEach(el => el.addEventListener('click', (e) => {
+            const clicked = e.target.textContent
+            handler(clicked)
+        }))
+    }
+
+    addHandlerBackButton(handler) {
+        document.querySelector('.back-button').addEventListener('click', () => {
+            console.log('back')
+            handler()
+        })
+
+    }
+
     renderBorderButton(text) {
-        return `
+        return `        
         <button class="btn border-button">${text}</button>
         `
     }
 
-    renderDetails(data, nativeName, currencies, languages, borders) {
+    renderDetails(data, nativeName, currencies, languages, borders, handler) {
         this.data = data[0]
+        console.log(this.data)
         this.cards.textContent = '';
         const html = `
-        <button class="details__btn btn">Back</button>
+        <button class="btn back-button">Back</button>
 
         <div class="country">
             <div class="flag__box">
@@ -58,7 +74,7 @@ class Country {
             </div>
             <div class="country__secondary-details">
                 <p class="country-label">Top Level Domain: <span class="country-data capital">${this.data.tld[0]}</span></p>
-                
+
                 <p class="country-label">Currencies: <span class="country-data region">${currencies}</span></p>
                 <p class="country-label">Languages: <span class="country-data region">${languages}</span></p>                
                 </div>
@@ -67,12 +83,15 @@ class Country {
                 Boder Countries
             </h4>
             <div class="borders">
-                ${borders.map(el => this.renderBorderButton(el.name.common)).join('')}
+                ${!this.data.borders
+                ? `sorry no borders`
+                : borders.map(el => this.renderBorderButton(el.name.common)).join('')}               
             </div>
         </div>
         `
+
+        this.detailsSection.textContent = '';
         this.detailsSection.insertAdjacentHTML('beforeend', html);
-        document.querySelectorAll('.border-button').forEach(el => el.addEventListener('click', () => console.log('a')))
     };
 
     renderCard(data) {
