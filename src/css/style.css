@@ -101,7 +101,7 @@ select option {
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-color: var(--clr-elements);
   height: 8rem;
@@ -116,12 +116,24 @@ select option {
   font-size: 1.2rem;
 }
 
+.input-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 4.8rem 2.4rem;
+}
+@media only screen and (max-width: 570px) {
+  .input-section {
+    flex-direction: column;
+    gap: 4rem;
+  }
+}
+
 .selection-section {
-  margin-left: var(--body-padding);
-  margin-bottom: 3.2rem;
   max-width: 18.8rem;
   background-color: var(--clr-elements);
   border-radius: 0.5rem;
+  width: 100%;
 }
 
 .input-form {
@@ -130,13 +142,14 @@ select option {
   gap: 2.5rem;
   padding: 1.7rem 3.2rem;
   background-color: var(--clr-elements);
-  margin: 2.4rem var(--body-padding) 4rem var(--body-padding);
   max-width: 48rem;
   border-radius: 0.5rem;
 }
 .input-form .input {
   background-color: var(--clr-elements);
   border: none;
+  caret-color: var(--clr-text);
+  color: var(--clr-text);
 }
 .input-form .input::placeholder {
   color: var(--clr-text);

@@ -1,55 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,600;0,800;1,300&display=swap"
-        rel="stylesheet">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,600;0,800;1,300&display=swap"
+      rel="stylesheet"
+    />
     <script type="module" src="controller.js"></script>
     <title>REST Countries API</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <header class="header">
-        <h1>
-            Where in the world
-        </h1>
-        <div class="header__dark-mode">
-            <img src="./assets/icon-moon.svg" alt="moon-icon" class="icon-moon">
-            <p class="dark-mode--text">
-                Dark Mode
-            </p>
-        </div>
+      <h1>Where in the world</h1>
     </header>
 
     <div class="input-section">
-        <form class="input-form">
-            <svg class="search__icon">
-                <use xlink:href="./assets/sprite.svg#icon-search"></use>
-            </svg>
-            <input class="input" placeholder="Search for a country...">
+      <form class="input-form">
+        <svg class="search__icon">
+          <use xlink:href="./assets/sprite.svg#icon-search"></use>
+        </svg>
+        <input class="input" placeholder="Search for a country..." />
+      </form>
 
-        </form>
-    </div>
-
-    <div class="selection-section">
+      <div class="selection-section">
         <select name="countries" class="countries">
-            <option selected="selected" class="default">Filter by Region</option>
-            <option value="africa">Africa</option>
-            <option value="americas">America</option>
-            <option value="asia">Asia</option>
-            <option value="europe">Europe</option>
-            <option value="oceania">Oceania</option>
+          <option selected="selected" class="default">Filter by Region</option>
+          <option value="africa">Africa</option>
+          <option value="americas">America</option>
+          <option value="asia">Asia</option>
+          <option value="europe">Europe</option>
+          <option value="oceania">Oceania</option>
         </select>
+      </div>
     </div>
 
     <main class="card-container">
-        <!-- <div class="card germany">
+      <!-- <div class="card germany">
             <div class="card__flag">
                 <img src="./assets/Flag_of_Germany.svg.png" alt="german-flag" class="flag">
             </div>
@@ -67,7 +59,7 @@
     </main>
 
     <section class="details-section">
-        <!-- <button class="details__btn btn">Back</button>
+      <!-- <button class="details__btn btn">Back</button>
 
         <div class="country">
             <div class="flag__box">
@@ -100,8 +92,5 @@
 
         </div> -->
     </section>
-
-
-</body>
-
+  </body>
 </html>
